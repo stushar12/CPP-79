@@ -1,44 +1,93 @@
-vector<int> abc(Node * root,vector<int> &v)
+#include<bits/stdc++.h>
+using namespace std;
+
+struct Node 
 {
-    queue<Node *> q;
-    stack<int> s;
-    bool val=true;
-    if(root==NULL)
-    return v;
-   q.push(root);
-        while(q.empty()!=true)
-        {   
-            int n=q.size();
-            for(int i=0;i<n;i++)
-            {   Node* t=q.front();
-                q.pop();
-                if(val)
-                {
-                    s.push(t->data);
-                }
-                else
-                {
-                    v.push_back(t->data);
-                }
-                if(t->left) q.push(t->left);
-                if(t->right) q.push(t->right);
-            }
-            if(val)
-            {
-                while(s.empty()!=true)
-                {
-                    v.push_back(s.top());
-                    s.pop();
-                }
-            }
-            val=!val;
-        }
-    return v;
+	int data; 
+	Node* left;
+	Node* right;
+};
+
+Node* GetNewNode(int data) 
+{
+	Node* newNode = new Node();
+	newNode->data = data;
+	newNode->left = newNode->right = NULL;
+	return newNode;
 }
-vector<int> findSpiral(Node *root)
+
+Node* Insert(Node* root,int data) 
 {
-    vector<int>v;
-    vector<int>a;
-    a=abc(root,v);
-    return a;
+	if(root == NULL)                                      // empty tree
+    {                                           
+		root = GetNewNode(data);
+	}
+	
+	else if(data <= root->data)                         // if data to be inserted start lesser, insert inorder left subtree. 
+    {
+		root->left = Insert(root->left,data);
+	}
+	
+	else                                                // else, insert inorder right subtree. 
+    {
+		root->right = Insert(root->right,data);
+	}
+	return root;
+}
+
+void spiral_tarversal(Node* root)
+{
+	if(root==NULL)
+	return ;
+
+	queue<Node*>q;
+	stack<int>s;
+	bool result=false;
+	q.push(root);
+	while(q.size())
+	{
+		int size=q.size();
+		for(int i=0;i<size;i++)
+		{
+			Node* temp=q.front();
+			q.pop();
+			if(!result)
+			{
+			cout<<temp->data<<" ";
+			}
+			else
+			{
+				s.push(temp->data);
+			}
+			if(temp->left!=NULL)
+			q.push(temp->left);
+			if(temp->right!=NULL)
+			q.push(temp->right);
+		}
+		if(result)
+		{
+			while(!s.empty())
+			{
+				cout<<s.top()<<" "; 
+				s.pop();
+			}
+		}
+		result=!result;
+		cout<<endl;
+	}
+}
+
+
+int main() 
+{
+	Node* root = NULL;  			// Creating an empty tree
+	root = Insert(root,15);	
+	root = Insert(root,10);	
+	root = Insert(root,20);
+	root = Insert(root,8);
+	root = Insert(root,12);
+	root = Insert(root,17);
+	root = Insert(root,25);
+
+	spiral_tarversal(root);
 }
