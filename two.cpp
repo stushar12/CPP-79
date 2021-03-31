@@ -42,7 +42,7 @@ void spiral_tarversal(Node* root)
 
 	queue<Node*>q;
 	stack<int>s;
-	bool result=false;
+	bool result=true;
 	q.push(root);
 	while(q.size())
 	{
